@@ -6,12 +6,12 @@ import { Overlay, ModalDiv } from './modal.style';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export const Modal =({ onChange, onClose, largeImageURL}) => {
+export const Modal =({ onCloseByEscape, largeImg}) => {
      
     useEffect(() => {
        const handleKeyDown = event => {
         if (event.code === 'Escape') {
-           onClose();
+           onCloseByEscape();
         }
     };
 
@@ -22,17 +22,17 @@ export const Modal =({ onChange, onClose, largeImageURL}) => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [onChange]);
+    }, [onCloseByEscape]);
   const handleBackdropClick = event => {
         if (event.target === event.currentTarget) {
-             onClose();
+             onCloseByEscape();
         }
     }
 
         return createPortal(
             <Overlay onClick={handleBackdropClick}>
                 <ModalDiv>
-                    <img src={largeImageURL} alt="help me" />
+                    <img src={largeImg} alt="help me" />
                 </ModalDiv>
             </Overlay>,
             modalRoot
@@ -40,7 +40,6 @@ export const Modal =({ onChange, onClose, largeImageURL}) => {
 }
 
 Modal.propTypes = {
-    onChange: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
-    largeImageURL: PropTypes.string.isRequired,
+    onCloseByEscape: PropTypes.func.isRequired,
+    largeImg: PropTypes.string.isRequired,
 };

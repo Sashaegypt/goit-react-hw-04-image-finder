@@ -7,6 +7,7 @@ import { Searchbar } from './Searchbar/searchBar';
 import { Loader } from './Loader/loader';
 import { ImageGallery } from './ImageGallery/imageGallery';
 import { Button } from './Button/button';
+import { Modal } from './Modal/modal';
 
 import { GlodalStyle } from './GlobalStyle';
 import { DivApp } from './App.style';
@@ -20,6 +21,8 @@ export const App = () =>{
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadMore, setIsLoadMore] = useState(false);
+    const [tags, setTags] = useState('');
+    const [largeImg, setLargeImg] = useState('');
 
     useEffect(() => {
         if (value === ''){
@@ -71,15 +74,30 @@ export const App = () =>{
        setIsLoadMore(false);
     };
 
+      const onSelectedImage = ({ largeImageURL, tags }) => {
+         setLargeImg(largeImageURL);
+         setTags(tags);
+    };
+     
+    const onCloseByEscape = () => { 
+        setLargeImg('');
+    }
 
         return (
             <DivApp>
                 <GlodalStyle />
                 <Searchbar onSubmit={handleForm} isSubmitting={isLoading} />
-                {images.length !== 0 && <ImageGallery items={images} />}
+                <ImageGallery items={images} onSelected={onSelectedImage} />
                 {isLoading && <Loader />}
                 {isLoadMore && <Button onClick={loadMore} />}
                 <ToastContainer autoClose={2000} />
+                {largeImg && (
+                  <Modal
+                   largeImg={largeImg}
+                   tags={tags}
+                   onCloseByEscape={onCloseByEscape}
+                   />
+                )}
             </DivApp>
         )
 }
