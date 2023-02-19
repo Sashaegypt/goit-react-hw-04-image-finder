@@ -14,7 +14,7 @@ export const ImageGalleryItem = ({ largeImageURL, webformatURL, tags }) =>{
     };
 
     const handleBackdropClick = event => {
-        if (event.targer === event.currentTarget) {
+        if (event.target === event.currentTarget) {
             setshowModal(false);
         }
     }
