@@ -9,15 +9,28 @@ const modalRoot = document.querySelector('#modal-root');
 export const Modal =({ onChange, onClose, largeImageURL}) => {
      
     useEffect(() => {
-        window.addEventListener('keydown', onChange);
+       const handleKeyDown = event => {
+        if (event.code === 'Escape') {
+           onClose();
+        }
+    };
+
+    
+
+        window.addEventListener('keydown', handleKeyDown);
 
         return () => {
-            window.removeEventListener('keydown', onChange);
+            window.removeEventListener('keydown', handleKeyDown);
         }
     }, [onChange]);
+  const handleBackdropClick = event => {
+        if (event.target === event.currentTarget) {
+             onClose();
+        }
+    }
 
         return createPortal(
-            <Overlay onClick={onClose}>
+            <Overlay onClick={handleBackdropClick}>
                 <ModalDiv>
                     <img src={largeImageURL} alt="help me" />
                 </ModalDiv>
